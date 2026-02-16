@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#FFB6C1">
+    <meta name="description" content="Tiny Treasures Kids Shop - Login to access our wonderful collection of kids products">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="logo.png">
+    <title>Login - Tiny Treasures Kids Shop</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-pink: #FFB6C1;
+            --light-pink: #FFC0CB;
+            --lighter-pink: #FFD1DC;
+            --pale-pink: #FFE4E9;
+            --white: #FFFFFF;
+            --black: #000000;
+            --text-black: #1a1a1a;
+            --border-color: #FFB6C1;
+            --shadow: rgba(255, 182, 193, 0.3);
+            --error-color: #FF6B6B;
+            --success-color: #4CAF50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--white) 0%, var(--white) 70%, var(--pale-pink) 70%, var(--pale-pink) 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-black);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, var(--pale-pink) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, var(--lighter-pink) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, var(--pale-pink) 0%, transparent 35%);
+            opacity: 0.3;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--white) 0%, var(--pale-pink) 100%);
+            padding: 15px 0;
+            box-shadow: 0 4px 15px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary-pink);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-placeholder {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-pink), var(--lighter-pink));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px var(--shadow);
+            border: 3px solid var(--white);
+            transition: transform 0.3s ease;
+        }
+
+        .logo-placeholder:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .logo-placeholder svg {
+            width: 35px;
+            height: 35px;
+            fill: var(--white);
+        }
+
+        .brand-name {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-black);
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px var(--shadow);
+        }
+
+        .brand-tagline {
+            font-size: 12px;
+            color: var(--text-black);
+            font-weight: 500;
+            margin-top: -5px;
+            font-style: italic;
+        }
+
+        /* Navigation Styles */
+        nav {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nav-button {
+            padding: 12px 24px;
+            background: var(--white);
+            border: 2px solid var(--primary-pink);
+            border-radius: 25px;
+            color: var(--text-black);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 10px var(--shadow);
+        }
+
+        .nav-button:hover {
+            background: var(--primary-pink);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow);
+        }
+
+        .nav-button.active {
+            background: var(--primary-pink);
+            color: var(--white);
+        }
+
+        .nav-button svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* Install Prompt Styles */
+        .install-prompt {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--primary-pink), var(--lighter-pink));
+            padding: 20px;
+            box-shadow: 0 -5px 25px var(--shadow);
+            z-index: 2000;
+            display: none;
+            animation: slideUp 0.4s ease;
+            border-top: 4px solid var(--white);
+        }
+
+        .install-prompt.show {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .install-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .install-text {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .install-text h3 {
+            color: var(--white);
+            font-size: 22px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .install-text p {
+            color: var(--white);
+            font-size: 15px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .install-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .install-btn, .later-btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .install-btn {
+            background: var(--white);
+            color: var(--primary-pink);
+        }
+
+        .install-btn:hover {
+            background: var(--text-black);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .later-btn {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .later-btn:hover {
+            background: var(--white);
+            color: var(--primary-pink);
+            transform: translateY(-3px);
+        }
+
+        /* Main Content Styles */
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 20px;
+            min-height: calc(100vh - 180px);
+        }
+
+        .login-container {
+            background: var(--white);
+            padding: 50px 45px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px var(--shadow);
+            max-width: 500px;
+            width: 100%;
+            border: 3px solid var(--pale-pink);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--pale-pink) 0%, transparent 70%);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary-pink), var(--lighter-pink));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px var(--shadow);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .login-icon svg {
+            width: 45px;
+            height: 45px;
+            fill: var(--white);
+        }
+
+        .login-header h1 {
+            font-size: 32px;
+            color: var(--text-black);
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .login-header p {
+            font-size: 16px;
+            color: var(--text-black);
+            opacity: 0.7;
+            font-weight: 500;
+        }
+
+        /* Tab Styles */
+        .login-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 35px;
+            background: var(--pale-pink);
+            padding: 8px;
+            border-radius: 50px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 14px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 50px;
+            color: var(--text-black);
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: var(--primary-pink);
+            color: var(--white);
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .tab-button:hover:not(.active) {
+            background: var(--lighter-pink);
+        }
+
+        /* Form Styles */
+        .login-form {
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-black);
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-label svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--primary-pink);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            font-size: 16px;
+            color: var(--text-black);
+            background: var(--white);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+            box-shadow: 0 0 0 4px rgba(255, 182, 193, 0.2);
+            background: var(--pale-pink);
+        }
+
+        .form-input::placeholder {
+            color: #999;
+            font-weight: 400;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-password:hover {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .toggle-password svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--primary-pink);
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary-pink);
+        }
+
+        .remember-me label {
+            color: var(--text-black);
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: var(--primary-pink);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: var(--text-black);
+            text-decoration: underline;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-pink), var(--lighter-pink));
+            border: none;
+            border-radius: 15px;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px var(--shadow);
+            background: linear-gradient(135deg, var(--lighter-pink), var(--primary-pink));
+        }
+
+        .submit-button:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-button svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--white);
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert.show {
+            display: flex;
+        }
+
+        .alert-error {
+            background: #ffe5e5;
+            color: var(--error-color);
+            border: 2px solid var(--error-color);
+        }
+
+        .alert-success {
+            background: #e8f5e9;
+            color: var(--success-color);
+            border: 2px solid var(--success-color);
+        }
+
+        .alert svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(135deg, var(--pale-pink) 0%, var(--white) 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 3px solid var(--primary-pink);
+            box-shadow: 0 -4px 15px var(--shadow);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-black);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-pink);
+            transform: translateY(-2px);
+        }
+
+        .footer-link svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .footer-text {
+            color: var(--text-black);
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .footer-text strong {
+            color: var(--primary-pink);
+            font-weight: 700;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid var(--pale-pink);
+            border-top: 3px solid var(--white);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .submit-button.loading .spinner {
+            display: block;
+        }
+
+        .submit-button.loading .button-text {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 20px;
+            }
+
+            .brand-name {
+                font-size: 22px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-button {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+
+            .login-container {
+                padding: 40px 30px;
+            }
+
+            .login-header h1 {
+                font-size: 26px;
+            }
+
+            .install-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .install-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-placeholder {
+                width: 50px;
+                height: 50px;
+            }
+
+            .brand-name {
+                font-size: 18px;
+            }
+
+            .nav-button {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+
+            .login-container {
+                padding: 30px 20px;
+            }
+
+            .login-header h1 {
+                font-size: 22px;
+            }
+
+            .form-input {
+                padding: 12px 16px;
+                font-size: 15px;
+            }
+
+            .submit-button {
+                padding: 14px;
+                font-size: 16px;
+            }
+        }
+
+        /* Accessibility */
+        *:focus {
+            outline: 2px solid var(--primary-pink);
+            outline-offset: 2px;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Additional Decorative Elements */
+        .decorative-circle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--pale-pink) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--lighter-pink) 0%, transparent 70%);
+            bottom: 50px;
+            left: -50px;
+            animation: pulse 5s ease-in-out infinite 1s;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--pale-pink);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-pink);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--lighter-pink);
+        }
+    </style>
+</head>
+<body>
+
+  <body>
+    <!-- Decorative Elements -->
+    <div class="decorative-circle circle-1"></div>
+    <div class="decorative-circle circle-2"></div>
+
+    <!-- Install Prompt -->
+    <div class="install-prompt" id="installPrompt">
+        <div class="install-content">
+            <div class="install-text">
+                <h3>Install Tiny Treasures Kids Shop</h3>
+                <p>Get quick access to our store with our mobile and desktop app!</p>
+            </div>
+            <div class="install-buttons">
+                <button class="install-btn" id="installButton">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                    Install App
+                </button>
+                <button class="later-btn" id="laterButton">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                    Maybe Later
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="logo-placeholder">
+                    <!-- Logo SVG - Replace src with your logo URL -->
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="brand-name">Tiny Treasures</div>
+                    <div class="brand-tagline">Kids Shop Management</div>
+                </div>
+            </div>
+            <nav>
+                <a href="home.html" class="nav-button">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                    Home
+                </a>
+                <a href="home.html#about" class="nav-button">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                    About Us
+                </a>
+                <a href="products.html" class="nav-button">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                    </svg>
+                    Products
+                </a>
+                <a href="home.html#services" class="nav-button">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 20h20v-4H2v4zm2-3h2v2H4v-2zM2 4v4h20V4H2zm4 3H4V5h2v2zm-4 7h20v-4H2v4zm2-3h2v2H4v-2z"/>
+                    </svg>
+                    Services
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                    </svg>
+                </div>
+                <h1>Welcome Back!</h1>
+                <p>Please login to continue to Tiny Treasures</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="login-tabs">
+                <button class="tab-button active" data-tab="user">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; margin-right: 5px;">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    User Login
+                </button>
+                <button class="tab-button" data-tab="admin">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px; margin-right: 5px;">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                    </svg>
+                    Admin Login
+                </button>
+            </div>
+
+            <!-- Alert Messages -->
+            <div class="alert alert-error" id="errorAlert">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <span id="errorMessage">Error message here</span>
+            </div>
+
+            <div class="alert alert-success" id="successAlert">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span id="successMessage">Success message here</span>
+            </div>
+
+            <!-- Login Form -->
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="username">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                        </svg>
+                        Username
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        class="form-input" 
+                        placeholder="Enter your username"
+                        required
+                        autocomplete="username"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                        </svg>
+                        Password
+                    </label>
+                    <div class="password-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input" 
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <svg id="eyeIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="remember-forgot">
+                    <div class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitButton">
+                    <span class="button-text">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/>
+                        </svg>
+                        Login Now
+                    </span>
+                    <div class="spinner"></div>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" class="footer-link">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                    Help Center
+                </a>
+                <a href="#" class="footer-link">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                    </svg>
+                    Privacy Policy
+                </a>
+                <a href="#" class="footer-link">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                    Contact Us
+                </a>
+            </div>
+            <p class="footer-text">© 2026 <strong>Tiny Treasures Kids Shop</strong>. All rights reserved. Made with love for kids.</p>
+        </div>
+    </footer>
+
+
+    <script>
+    // Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(registration => {
+                    console.log('Service Worker registered successfully:', registration.scope);
+                    
+                    // Force update on page load
+                    registration.update();
+                    
+                    // Listen for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // New service worker available, reload page
+                                if (confirm('New version available! Reload to update?')) {
+                                    window.location.reload();
+                                }
+                            }
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.log('Service Worker registration failed:', error);
+                });
+        });
+    }
+
+    // PWA Install Prompt
+    let deferredPrompt;
+    const installPrompt = document.getElementById('installPrompt');
+    const installButton = document.getElementById('installButton');
+    const laterButton = document.getElementById('laterButton');
+
+    // Check if app was previously dismissed
+    const installDismissed = localStorage.getItem('installDismissed');
+    const installDismissedTime = localStorage.getItem('installDismissedTime');
+
+    // Show prompt after 2 seconds if not dismissed or if 24 hours have passed
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+
+        const currentTime = new Date().getTime();
+        const dayInMs = 24 * 60 * 60 * 1000;
+
+        if (!installDismissed || (currentTime - installDismissedTime > dayInMs)) {
+            setTimeout(() => {
+                installPrompt.classList.add('show');
+            }, 2000);
+        }
+    });
+
+    // Install button click
+    installButton.addEventListener('click', async () => {
+        if (!deferredPrompt) {
+            alert('Install prompt not available. You may have already installed the app or your browser does not support installation.');
+            return;
+        }
+
+        installPrompt.classList.remove('show');
+        deferredPrompt.prompt();
+
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to install prompt: ${outcome}`);
+
+        if (outcome === 'accepted') {
+            localStorage.removeItem('installDismissed');
+            localStorage.removeItem('installDismissedTime');
+        }
+
+        deferredPrompt = null;
+    });
+
+    // Later button click
+    laterButton.addEventListener('click', () => {
+        installPrompt.classList.remove('show');
+        localStorage.setItem('installDismissed', 'true');
+        localStorage.setItem('installDismissedTime', new Date().getTime());
+    });
+
+    // Show prompt again if app is uninstalled
+    window.addEventListener('appinstalled', () => {
+        console.log('App installed successfully');
+        localStorage.removeItem('installDismissed');
+        localStorage.removeItem('installDismissedTime');
+    });
+
+    // Tab Switching
+    const tabButtons = document.querySelectorAll('.tab-button');
+    let currentTab = 'user';
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            currentTab = button.getAttribute('data-tab');
+            
+            // Update form header text based on tab
+            const headerText = document.querySelector('.login-header p');
+            if (currentTab === 'admin') {
+                headerText.textContent = 'Admin access to manage Tiny Treasures';
+            } else {
+                headerText.textContent = 'Please login to continue to Tiny Treasures';
+            }
+        });
+    });
+
+    // Password Toggle
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    togglePassword.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        if (type === 'text') {
+            eyeIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>';
+        } else {
+            eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+        }
+    });
+
+    // Multiple Valid Passwords System
+    const validPasswords = {
+        user: [
+            { username: 'user1', password: 'user123' },
+            { username: 'user2', password: 'user456' },
+            { username: 'testuser', password: 'test123' },
+            { username: 'demo', password: 'demo123' }
+        ],
+        admin: [
+            { username: 'admin', password: 'admin123' },
+            { username: 'superadmin', password: 'super123' },
+            { username: 'manager', password: 'manager123' }
+        ]
+    };
+
+    // Alert Functions
+    function showError(message) {
+        const errorAlert = document.getElementById('errorAlert');
+        const errorMessage = document.getElementById('errorMessage');
+        errorMessage.textContent = message;
+        errorAlert.classList.add('show');
+        
+        setTimeout(() => {
+            errorAlert.classList.remove('show');
+        }, 4000);
+    }
+
+    function showSuccess(message) {
+        const successAlert = document.getElementById('successAlert');
+        const successMessage = document.getElementById('successMessage');
+        successMessage.textContent = message;
+        successAlert.classList.add('show');
+        
+        setTimeout(() => {
+            successAlert.classList.remove('show');
+        }, 3000);
+    }
+
+    // Form Submission
+    const loginForm = document.getElementById('loginForm');
+    const submitButton = document.getElementById('submitButton');
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+
+        // Validate inputs
+        if (!username || !password) {
+            showError('Please enter both username and password');
+            return;
+        }
+
+        // Show loading state
+        submitButton.classList.add('loading');
+        submitButton.disabled = true;
+
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Check credentials
+        const credentials = validPasswords[currentTab];
+        const validUser = credentials.find(
+            cred => cred.username === username && cred.password === password
+        );
+
+        if (validUser) {
+            // Store login session
+            const loginData = {
+                username: username,
+                role: currentTab,
+                timestamp: new Date().getTime(),
+                rememberMe: rememberMe
+            };
+
+            // Store in sessionStorage (always) and localStorage (if remember me is checked)
+            sessionStorage.setItem('userSession', JSON.stringify(loginData));
+            
+            if (rememberMe) {
+                localStorage.setItem('userSession', JSON.stringify(loginData));
+            }
+
+            showSuccess(`Welcome back, ${username}! Redirecting...`);
+
+            // Redirect to home.html after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'home.html';
+            }, 2000);
+        } else {
+            showError('Invalid username or password. Please try again.');
+            submitButton.classList.remove('loading');
+            submitButton.disabled = false;
+        }
+    });
+
+    // Check if user is already logged in
+    window.addEventListener('DOMContentLoaded', () => {
+        const sessionData = sessionStorage.getItem('userSession') || localStorage.getItem('userSession');
+        
+        if (sessionData) {
+            try {
+                const loginData = JSON.parse(sessionData);
+                const currentTime = new Date().getTime();
+                const sessionDuration = 24 * 60 * 60 * 1000; // 24 hours
+
+                // Check if session is still valid
+                if (loginData.rememberMe || (currentTime - loginData.timestamp < sessionDuration)) {
+                    // User is already logged in, redirect to home
+                    window.location.href = 'home.html';
+                } else {
+                    // Session expired, clear storage
+                    sessionStorage.removeItem('userSession');
+                    localStorage.removeItem('userSession');
+                }
+            } catch (error) {
+                console.error('Error parsing session data:', error);
+            }
+        }
+    });
+
+    // Input validation and formatting
+    const usernameInput = document.getElementById('username');
+    usernameInput.addEventListener('input', (e) => {
+        // Remove spaces from username
+        e.target.value = e.target.value.replace(/\s/g, '');
+    });
+
+    // Enhanced accessibility - keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (installPrompt.classList.contains('show')) {
+                laterButton.click();
+            }
+        }
+    });
+
+    // Form validation feedback
+    const formInputs = document.querySelectorAll('.form-input');
+    formInputs.forEach(input => {
+        input.addEventListener('blur', () => {
+            if (input.value.trim() === '' && input.hasAttribute('required')) {
+                input.style.borderColor = 'var(--error-color)';
+            } else {
+                input.style.borderColor = 'var(--border-color)';
+            }
+        });
+
+        input.addEventListener('focus', () => {
+            input.style.borderColor = 'var(--primary-pink)';
+        });
+    });
+
+    // Prevent form submission on Enter in password field (optional enhancement)
+    passwordInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            loginForm.dispatchEvent(new Event('submit'));
+        }
+    });
+
+    // Auto-focus username field on page load
+    window.addEventListener('load', () => {
+        usernameInput.focus();
+    });
+
+    // Clear error messages when user starts typing
+    usernameInput.addEventListener('input', () => {
+        document.getElementById('errorAlert').classList.remove('show');
+    });
+
+    passwordInput.addEventListener('input', () => {
+        document.getElementById('errorAlert').classList.remove('show');
+    });
+
+    // Analytics and tracking (placeholder for future implementation)
+    function trackEvent(eventName, eventData) {
+        console.log('Event tracked:', eventName, eventData);
+        // Implement your analytics tracking here
+    }
+
+    // Track login attempts
+    loginForm.addEventListener('submit', () => {
+        trackEvent('login_attempt', {
+            role: currentTab,
+            timestamp: new Date().toISOString()
+        });
+    });
+
+    // Track install prompt interactions
+    installButton.addEventListener('click', () => {
+        trackEvent('install_clicked', {
+            timestamp: new Date().toISOString()
+        });
+    });
+
+    laterButton.addEventListener('click', () => {
+        trackEvent('install_dismissed', {
+            timestamp: new Date().toISOString()
+        });
+    });
+
+    // Prevent context menu on images and sensitive elements
+    document.addEventListener('contextmenu', (e) => {
+        if (e.target.tagName === 'IMG' || e.target.closest('.logo-placeholder')) {
+            e.preventDefault();
+        }
+    });
+
+    // Online/Offline Detection
+    window.addEventListener('online', () => {
+        showSuccess('You are back online!');
+    });
+
+    window.addEventListener('offline', () => {
+        showError('You are currently offline. Some features may not work.');
+    });
+
+    // Console welcome message
+    console.log('%c🎈 Welcome to Tiny Treasures Kids Shop! 🎈', 'color: #FFB6C1; font-size: 20px; font-weight: bold;');
+    console.log('%cDeveloped with love for kids and parents', 'color: #FFB6C1; font-size: 14px;');
+</script>
+
+</body>
+</html>
