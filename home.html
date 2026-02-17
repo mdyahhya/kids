@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tiny Treasures - Products</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="theme-color" content="#FFB6C1">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        :root{
+            --primary-pink:#FFB6C1;
+            --light-pink:#FFC0CB;
+            --pale-pink:#FFE4E9;
+            --white:#FFFFFF;
+            --black:#000000;
+            --shadow:rgba(255,182,193,0.35);
+        }
+        body{
+            font-family:'Segoe UI',sans-serif;
+            background:linear-gradient(135deg,var(--white) 0%,var(--white) 70%,var(--pale-pink) 70%,var(--pale-pink) 100%);
+            color:var(--black);
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+        }
+        header{
+            background:linear-gradient(135deg,var(--white),var(--pale-pink));
+            border-bottom:3px solid var(--primary-pink);
+            box-shadow:0 4px 15px var(--shadow);
+            position:sticky;
+            top:0;
+            z-index:50;
+        }
+        .header-container{
+            max-width:1200px;
+            margin:0 auto;
+            padding:12px 20px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:16px;
+            flex-wrap:wrap;
+        }
+        .logo-section{display:flex;align-items:center;gap:12px;}
+        .logo-placeholder{
+            width:52px;height:52px;border-radius:50%;
+            background:linear-gradient(135deg,var(--primary-pink),var(--light-pink));
+            display:flex;align-items:center;justify-content:center;
+            box-shadow:0 4px 12px var(--shadow);
+        }
+        .logo-placeholder svg{width:30px;height:30px;fill:var(--white);}
+        .brand-name{font-size:22px;font-weight:800;}
+        .brand-tagline{font-size:11px;font-style:italic;}
+        nav{display:flex;gap:10px;flex-wrap:wrap;}
+        .nav-button{
+            padding:10px 18px;
+            border-radius:22px;
+            border:2px solid var(--primary-pink);
+            background:var(--white);
+            font-size:14px;
+            font-weight:600;
+            color:var(--black);
+            text-decoration:none;
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            box-shadow:0 3px 10px var(--shadow);
+            transition:0.25s;
+        }
+        .nav-button svg{width:18px;height:18px;fill:currentColor;}
+        .nav-button:hover{
+            background:var(--primary-pink);
+            color:var(--white);
+            transform:translateY(-1px);
+        }
+        .nav-button.active{
+            background:var(--primary-pink);
+            color:var(--white);
+        }
+        .logout-btn{
+            border-color:#ff6b6b;
+            color:#ff6b6b;
+        }
+        .logout-btn:hover{
+            background:#ff6b6b;
+            color:var(--white);
+        }
+        main{
+            flex:1;
+            max-width:1200px;
+            margin:20px auto 40px;
+            padding:0 20px;
+        }
+        .page-header{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:16px;
+            margin-bottom:18px;
+            flex-wrap:wrap;
+        }
+        .page-title{
+            font-size:22px;
+            font-weight:800;
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+        .page-title svg{width:24px;height:24px;fill:var(--primary-pink);}
+        .filter-bar{
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+        }
+        .filter-pill{
+            padding:6px 12px;
+            border-radius:18px;
+            border:2px solid var(--primary-pink);
+            background:var(--white);
+            font-size:13px;
+            font-weight:600;
+            cursor:pointer;
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+        }
+        .filter-pill svg{width:16px;height:16px;fill:currentColor;}
+        .filter-pill.active{
+            background:var(--primary-pink);
+            color:var(--white);
+        }
+        .products-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+            gap:16px;
+        }
+        .product-card{
+            background:var(--white);
+            border-radius:18px;
+            border:2px solid var(--pale-pink);
+            box-shadow:0 4px 20px var(--shadow);
+            padding:12px 12px 14px;
+            display:flex;
+            flex-direction:column;
+            gap:8px;
+        }
+        .product-image-wrapper{
+            width:100%;
+            padding-top:70%;
+            border-radius:14px;
+            border:2px dashed var(--primary-pink);
+            position:relative;
+            overflow:hidden;
+            background:#FFF8FB;
+        }
+        .product-image-wrapper span{
+            position:absolute;
+            inset:0;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:12px;
+            color:#999;
+            padding:0 6px;
+            text-align:center;
+        }
+        .product-image-wrapper img{
+            position:absolute;
+            inset:0;
+            width:100%;
+            height:100%;
+            object-fit:cover;
+        }
+        .product-title{
+            font-size:15px;
+            font-weight:700;
+        }
+        .product-meta{
+            display:flex;
+            justify-content:space-between;
+            flex-wrap:wrap;
+            gap:6px;
+            font-size:13px;
+        }
+        .badge{
+            padding:4px 8px;
+            border-radius:999px;
+            background:var(--pale-pink);
+            border:1px solid var(--primary-pink);
+            font-size:11px;
+            font-weight:600;
+        }
+        .price{
+            font-weight:700;
+        }
+        .product-actions{
+            margin-top:6px;
+            display:flex;
+            justify-content:space-between;
+            gap:8px;
+            flex-wrap:wrap;
+        }
+        .small-btn{
+            flex:1;
+            padding:6px 8px;
+            border-radius:14px;
+            border:2px solid var(--primary-pink);
+            background:var(--white);
+            font-size:12px;
+            font-weight:600;
+            display:inline-flex;
+            align-items:center;
+            gap:5px;
+            justify-content:center;
+            cursor:pointer;
+        }
+        .small-btn svg{width:14px;height:14px;fill:currentColor;}
+        footer{
+            padding:22px 20px;
+            background:linear-gradient(135deg,var(--pale-pink),var(--white));
+            border-top:3px solid var(--primary-pink);
+            text-align:center;
+            font-size:13px;
+        }
+        footer strong{color:var(--primary-pink);}
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div class="logo-section">
+            <div class="logo-placeholder">
+                <!-- logo url empty by default; you can inject your own image -->
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
+                </svg>
+            </div>
+            <div>
+                <div class="brand-name">Tiny Treasures</div>
+                <div class="brand-tagline">Kids Shop Management</div>
+            </div>
+        </div>
+        <nav>
+            <a href="home.html" class="nav-button">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                Home
+            </a>
+            <a href="home.html#about" class="nav-button">
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                About Us
+            </a>
+            <a href="products.html" class="nav-button active">
+                <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                Products
+            </a>
+            <a href="home.html#services" class="nav-button">
+                <svg viewBox="0 0 24 24"><path d="M2 20h20v-4H2v4zm2-3h2v2H4v-2zM2 4v4h20V4H2zm4 3H4V5h2v2zm-4 7h20v-4H2v4zm2-3h2v2H4v-2z"/></svg>
+                Services
+            </a>
+            <button id="logoutBtn" class="nav-button logout-btn" type="button">
+                <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67zM19 3H9v2h10v14H9v2h10c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                Logout
+            </button>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="page-header">
+        <div class="page-title">
+            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            Kids products
+        </div>
+        <div class="filter-bar">
+            <button class="filter-pill active" data-filter="all">
+                <svg viewBox="0 0 24 24"><path d="M3 5v4h4V5H3zm0 6v4h4v-4H3zm6-6v4h4V5h-4zm0 6v4h4v-4h-4zm6-6v4h4V5h-4zm0 6v4h4v-4h-4z"/></svg>
+            All
+            </button>
+            <button class="filter-pill" data-filter="toys">
+                <svg viewBox="0 0 24 24"><path d="M12 2C9.24 2 7 4.24 7 7v2H5v4h2v6h4v-6h2v6h4v-6h2v-4h-2V7c0-2.76-2.24-5-5-5z"/></svg>
+            Toys
+            </button>
+            <button class="filter-pill" data-filter="clothes">
+                <svg viewBox="0 0 24 24"><path d="M16.24 3.56L14 5l-2-2-2 2-2.24-1.44L3 7l2 3v9h14v-9l2-3-2.76-3.44z"/></svg>
+            Clothes
+            </button>
+            <button class="filter-pill" data-filter="school">
+                <svg viewBox="0 0 24 24"><path d="M4 5v14h16V5H4zm8 2l6 3.27v.01L12 13 6 10.28 12 7z"/></svg>
+            School
+            </button>
+        </div>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+        <!-- Sample cards, image src empty for you to fill -->
+        <div class="product-card" data-category="toys">
+            <div class="product-image-wrapper">
+                <!-- put your toy image url here -->
+                <img src="" alt="Soft teddy toy">
+                <span>No image set. Add toy image URL in src.</span>
+            </div>
+            <div class="product-title">Soft teddy bear</div>
+            <div class="product-meta">
+                <span class="badge">Toys</span>
+                <span class="price">₹ 0.00</span>
+            </div>
+            <div class="product-actions">
+                <button class="small-btn">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4 8.04 4 9.54 4.81 10.35 6.09 11.16 4.81 12.66 4 14.2 4 16.7 4 18.7 6 18.7 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    Wish
+                </button>
+                <button class="small-btn">
+                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1z"/></svg>
+                    Add
+                </button>
+            </div>
+        </div>
+
+        <div class="product-card" data-category="clothes">
+            <div class="product-image-wrapper">
+                <!-- clothes image url here -->
+                <img src="" alt="Kids t-shirt">
+                <span>No image set. Add clothing image URL in src.</span>
+            </div>
+            <div class="product-title">Kids cotton t‑shirt</div>
+            <div class="product-meta">
+                <span class="badge">Clothes</span>
+                <span class="price">₹ 0.00</span>
+            </div>
+            <div class="product-actions">
+                <button class="small-btn">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4 8.04 4 9.54 4.81 10.35 6.09 11.16 4.81 12.66 4 14.2 4 16.7 4 18.7 6 18.7 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    Wish
+                </button>
+                <button class="small-btn">
+                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1z"/></svg>
+                    Add
+                </button>
+            </div>
+        </div>
+
+        <div class="product-card" data-category="school">
+            <div class="product-image-wrapper">
+                <!-- school item image url here -->
+                <img src="" alt="School backpack">
+                <span>No image set. Add school item image URL in src.</span>
+            </div>
+            <div class="product-title">Lightweight backpack</div>
+            <div class="product-meta">
+                <span class="badge">School</span>
+                <span class="price">₹ 0.00</span>
+            </div>
+            <div class="product-actions">
+                <button class="small-btn">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4 8.04 4 9.54 4.81 10.35 6.09 11.16 4.81 12.66 4 14.2 4 16.7 4 18.7 6 18.7 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                    Wish
+                </button>
+                <button class="small-btn">
+                    <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1z"/></svg>
+                    Add
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    © 2026 <strong>Tiny Treasures Kids Shop</strong>. Add your own product images and pricing anytime.
+</footer>
+
+<script>
+    function getSession(){
+        try{
+            const s = sessionStorage.getItem('userSession') || localStorage.getItem('userSession');
+            return s ? JSON.parse(s) : null;
+        }catch(e){
+            return null;
+        }
+    }
+
+    function enforceLogin(){
+        const session = getSession();
+        if(!session){
+            window.location.href = 'index.html';
+            return;
+        }
+        const now = Date.now();
+        const sessionDuration = 24*60*60*1000;
+        if(!session.rememberMe && (now - session.timestamp) > sessionDuration){
+            sessionStorage.removeItem('userSession');
+            localStorage.removeItem('userSession');
+            window.location.href = 'index.html';
+            return;
+        }
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click',function(){
+        sessionStorage.removeItem('userSession');
+        localStorage.removeItem('userSession');
+        window.location.href = 'index.html';
+    });
+
+    // Simple category filter
+    const filterButtons = document.querySelectorAll('.filter-pill');
+    const cards = document.querySelectorAll('.product-card');
+
+    filterButtons.forEach(btn=>{
+        btn.addEventListener('click',()=>{
+            filterButtons.forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            const filter = btn.getAttribute('data-filter');
+            cards.forEach(card=>{
+                const cat = card.getAttribute('data-category');
+                card.style.display = (filter==='all' || filter===cat) ? 'flex' : 'none';
+            });
+        });
+    });
+
+    // Service worker registration
+    if('serviceWorker' in navigator){
+        window.addEventListener('load',function(){
+            navigator.serviceWorker.register('sw.js').then(function(reg){
+                reg.update();
+            }).catch(function(){});
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded',enforceLogin);
+</script>
+</body>
+</html>
