@@ -9,14 +9,14 @@
   "description": "Kids shop management PWA for Tiny Treasures.",
   "icons": [
     {
-      "src": "icons/icon-192.png",
+      "src": "kids.jpg",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/jpg"
     },
     {
-      "src": "icons/icon-512.png",
+      "src": "kids.jpg",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpg"
     }
   ]
 }
